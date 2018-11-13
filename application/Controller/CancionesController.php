@@ -27,7 +27,7 @@ class CancionesController
         $canciones = $cancion->getAllSongs();
 
 
-        $this->view->render('canciones/listar', ['titulo' => 'Listado de cancioness']);
+        $this->view->render('canciones/listar', ['titulo' => 'Listado de cancioness', 'canciones' => $canciones]);
     }
 
 
