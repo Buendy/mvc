@@ -8,10 +8,7 @@
     <article class="pregunta">
         <h3><?= $pregunta->asunto ?></h3>
         <p><?= $pregunta->cuerpo ?></p>
-        <footer>
-          <a href="/preguntas/editar/<?= $pregunta->id ?>">Editar</a>
-        </footer>
     </article>
-  <?php endforeach; ?>
-<?php endif; ?>
+    <?php endforeach ?>
+    <?php endif ?>
 </div>
