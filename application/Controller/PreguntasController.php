@@ -2,6 +2,7 @@
 namespace Mini\Controller;
 use Mini\Model\Pregunta;
 use Mini\Core\View;
+
 class PreguntasController
 {
 	private $view = null;
@@ -9,6 +10,7 @@ class PreguntasController
 	public function __construct()
 	{
 		$this->view = new View;
+		Session::init();
 		$this->titulo = 'Preguntas';
 	}
 	public function todas()
@@ -48,4 +50,35 @@ class PreguntasController
 			}
 		}
 	}
+
+
+    public function editar($id = 0) {
+        if ( ! $_POST ) {
+            $pregunta = Pregunta::getId($id);
+            if ($pregunta) {
+                $this->view->render('preguntas/formulariopregunta', [
+                    'accion'	=>	'editar',
+                    'datos'		=> 	get_object_vars($pregunta)
+                ]);
+            } else {
+                header("location: /preguntas/todas");
+            }
+        } else {
+            $datos = [
+                'id'		=> (isset($_POST['id'])) ? $_POST['id'] : 0 ,
+                'asunto'	=> (isset($_POST['asunto'])) ? $_POST['asunto'] : '' ,
+                'cuerpo'	=> (isset($_POST['cuerpo'])) ? $_POST['cuerpo'] : ''
+            ];
+            if (Pregunta::edit($datos)) {
+                header('location: /preguntas/todas');
+            } else {
+                $this->view->render('preguntas/formulariopregunta', [
+                    'errores'	=>	['Error al editar'],
+                    'accion'	=>	'editar',
+                    'datos'		=> 	$_POST
+                ]);
+            }
+        }
+
+    }
 }
