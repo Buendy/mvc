@@ -15,6 +15,10 @@ class ComposerStaticInit59b4de1adb580b2c775f2b7705b3f736
         array (
             'Mini\\' => 5,
         ),
+        'L' => 
+        array (
+            'League\\Plates\\' => 14,
+        ),
         'K' => 
         array (
             'Kint\\' => 5,
@@ -25,6 +29,10 @@ class ComposerStaticInit59b4de1adb580b2c775f2b7705b3f736
         'Mini\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application',
+        ),
+        'League\\Plates\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/plates/src',
         ),
         'Kint\\' => 
         array (

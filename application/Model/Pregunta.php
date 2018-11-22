@@ -14,22 +14,18 @@ class Pregunta
     public static function insert($datos)
     {
         $conn = Database::getInstance()->getDatabase();
-
-        if(empty($datos['asunto'])){
+        $errores_validacion = false;
+        if ( empty($datos['asunto']) ) {
             Session::add('feedback_negative', 'No he recibido el asunto de la pregunta');
-            $errores_validacion[] = true;
-
+            $errores_validacion = true;
         }
-        if(empty($datos['cuerpo'])){
+        if ( empty($datos['cuerpo'])) {
             Session::add('feedback_negative', 'No he recibido el cuerpo de la pregunta');
-            $errores_validacion[]= true;
-
+            $errores_validacion = true;
         }
-
-        if($errores_validacion){
+        if ( $errores_validacion ) {
             return false;
         }
-
         $params = [
             ':asunto' => $datos['asunto'],
             ':cuerpo' => $datos['cuerpo']
@@ -59,9 +55,20 @@ class Pregunta
     public static function edit($datos)
     {
         $conn = Database::getInstance()->getDatabase();
-        if (empty($datos['asunto']) || empty($datos['cuerpo']) || empty($datos['id'])) {
-            return false;
+        $errores_validacion = false;
+        if (empty($datos['id'])) {
+            Session::add('feedback_negative','No he recibido la pregunta');
+            $errores_validacion = true;
         }
+        if (empty($datos['asunto'])) {
+            Session::add('feedback_negative', 'No he recibido el asunto de la pregunta');
+            $errores_validacion = true;
+        }
+        if (empty($datos['cuerpo'])) {
+            Session::add('feedback_negative', 'No he recibido el cuerpo de la pregunta');
+            $errores_validacion = true;
+        }
+        if ($errores_validacion) return false;
         $datos['id'] = (int) $datos['id'];
         $ssql = "UPDATE preguntas SET asunto=:asunto, cuerpo=:cuerpo WHERE id=:id";
         $query = $conn->prepare($ssql);

@@ -14,15 +14,18 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "league/plates": "3.3.*"
+    },
+    "require-dev": {
+        "kint-php/kint": "dev-master"
+    },
     "autoload":
     {
         "psr-4":
         {
             "Mini\\" : "application/"
         }
-    },
-    "require-dev": {
-        "kint-php/kint": "dev-master"
     }
+
 }
