@@ -1,7 +1,8 @@
 <?php
 namespace Mini\Controller;
+use Mini\Core\Controller;
 use Mini\Core\View;
-class ErrorController
+class ErrorController extends Controller
 {
     private $view = null;
     private $msg;

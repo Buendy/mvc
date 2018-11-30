@@ -3,29 +3,30 @@ namespace Mini\Controller;
 use Mini\Model\Pregunta;
 use Mini\Core\View;
 use Mini\Core\Session;
-class PreguntasController
+use Mini\Core\Controller;
+class PreguntasController extends Controller
 {
-    private $view = null;
+
     private $titulo;
     public function __construct()
     {
-        $this->view = new View;
-        Session::init();
+        parent::__construct();
         $this->titulo = 'Preguntas';
     }
     public function todas()
     {
         $pregunta = new Pregunta();
         $preguntas = $pregunta->getAll();
-        $this->view->render('preguntas/todas',[
+        echo $this->view->render('preguntas/todas',[
             'preguntas' => $preguntas,
             'titulo' => $this->titulo
         ]);
+
     }
     public function crear()
     {
         if ( ! $_POST ) {
-            $this->view->render('preguntas/formulariopregunta');
+            echo $this->view->render('preguntas/formulariopregunta');
         } else {
             $errores = [];
             if ( ! isset($_POST['asunto'])) {
@@ -41,11 +42,20 @@ class PreguntasController
                 'cuerpo' => $_POST['cuerpo']
             ];
             if ( Pregunta::insert($datos) ) {
-                $this->view->render('preguntas/preguntainsertada');
+                if (! is_null(Session::get('feedback_positive')) && count(Session::get('feedback_positive'))>0){
+                    $feedback = 'positive';
+                    $errors = Session::get('feedback_positive');
+                }
+               echo $this->view->render('preguntas/preguntaInsertada');
             } else {
-                $this->view->render('preguntas/formulariopregunta', [
-                    'errores' => $errores,
-                    'datos' => $_POST
+                if (! is_null(Session::get('feedback_negative')) && count(Session::get('feedback_negative'))>0){
+                    $feedback = 'negative';
+                    $errors = Session::get('feedback_negative');
+                }
+                echo $this->view->render('preguntas/formulariopregunta', [
+                    'datos' => $_POST,
+                    'feedback' => $feedback,
+                    'errors' => $errors
                 ]);
             }
         }
@@ -54,7 +64,7 @@ class PreguntasController
         if ( ! $_POST ) {
             $pregunta = Pregunta::getId($id);
             if ($pregunta) {
-                $this->view->render('preguntas/formulariopregunta', [
+                echo $this->view->render('preguntas/formulariopregunta', [
                     'accion'	=>	'editar',
                     'datos'		=> 	get_object_vars($pregunta)
                 ]);
@@ -70,7 +80,7 @@ class PreguntasController
             if (Pregunta::edit($datos)) {
                 header('location: /preguntas/todas');
             } else {
-                $this->view->render('preguntas/formulariopregunta', [
+                echo $this->view->render('preguntas/formulariopregunta', [
                     'errores'	=>	['Error al editar'],
                     'accion'	=>	'editar',
                     'datos'		=> 	$_POST

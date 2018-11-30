@@ -1,5 +1,6 @@
 <?php
 namespace Mini\Core;
+use League\Plates\Engine;
 
 class TemplatesFactory
 {
@@ -8,7 +9,7 @@ class TemplatesFactory
     public static function templates()
     {
         if(!TemplatesFactory::$templates){
-            TemplatesFactory::$templates = new League\Plates\Engine(APP . 'view');
+            TemplatesFactory::$templates = new Engine(APP . 'view');
             TemplatesFactory::$templates->addData(['titulo' => 'FAQ']);
 
             return TemplatesFactory::$templates;
